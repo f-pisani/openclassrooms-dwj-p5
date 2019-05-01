@@ -4,7 +4,7 @@ namespace App;
 /***********************************************************************************************************************
  * Class Request
  *     public static function all()
- *     public static function assoc()
+ *     public static function assoc($keys="")
  *     public static function set($key, $data)
  *     public static function get($key)
  *     public static function exists($key)
@@ -45,12 +45,23 @@ class Request
 	}
 
 	/*******************************************************************************************************************
-	 * public static function assoc()
+	 * public static function assoc($keys="")
+	 *     $keys : comma separeted list of keys to get or and array
 	 *
-	 * Returns an associative array with $_REQUEST, $_POST, $_GET and $_FILES
+	 * Returns an associative array with $_REQUEST, $_POST, $_GET and $_FILES or only withs $keys if specified
 	 */
-	public static function assoc()
+	public static function assoc($keys="")
 	{
+		if (strlen($keys)) $keys = explode(',', $keys);
+
+		if (is_array($keys))
+		{
+			$datas = [];
+			foreach ($keys as $key) $datas[$key] = Request::get($key);
+
+			return $datas;
+		}
+
 		return ['request' => $_REQUEST, 'post' => $_POST, 'get' => $_GET, 'files' => $_FILES];
 	}
 

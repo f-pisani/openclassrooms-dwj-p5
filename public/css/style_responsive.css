@@ -1,0 +1,15 @@
+@media only screen and (max-width: 1200px)
+{
+	body, html { box-sizing: border-box; }
+
+	.form { box-sizing: border-box;}
+	.form-row { align-items: flex-start; flex-direction: column; }
+	.form-label { box-sizing: border-box; width: 100%; }
+	.form-input, .form-textarea { box-sizing: border-box; width: 100%; }
+
+	.login-layout #content h1 { font-size: 2.5rem; margin: 0; }
+
+	.login-layout #form-wrapper { width: 100%; flex-direction: column-reverse; }
+	.login-layout #form-wrapper #form-register, .login-layout #form-wrapper #form-login { box-sizing: border-box; width: 90%; margin: auto; }
+	.login-layout #form-wrapper #form-login, .login-layout #form-wrapper #form-register { border: unset; }
+}

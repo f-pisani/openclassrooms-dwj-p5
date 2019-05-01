@@ -4,7 +4,7 @@ require_once '../bootstrap.php';
 
 use App\{Router};
 
-Router::get('/', 'HomeController@index')->setName('ROOT');
-Router::error404('HomeController@index');
+Router::match(['get', 'post'], '/login', 'LoginController@index');
+Router::match(['get', 'post'], '/register', 'LoginController@register');
 
 Router::dispatch();
