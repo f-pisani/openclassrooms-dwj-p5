@@ -183,11 +183,13 @@ class DataValidator
 					}
 					elseif ($ruleType == 'required' && $param) $error = true;
 
-					if ($error) $validated = false;
-					if ($error && array_key_exists('msg', $params))
+					if ($error)
 					{
+						$validated = false;
+
 						if (!array_key_exists($key, $this->errors)) $this->errors[$key] = [];
-						$this->errors[$key][] = ['msg' => self::generateErrorMsg($key, $params['msg'], $ruleType, $param)];
+						$this->errors[$key][] = ['type' => $ruleType,
+											   	 'msg' => (array_key_exists('msg', $params)) ? self::generateErrorMsg($key, $params['msg'], $ruleType, $param) : ''];
 					}
 				}
 			}
@@ -220,6 +222,7 @@ class DataValidator
 		switch ($ruleType)
 		{
 			case 'set': $param = "[".implode(',', $param)."]"; break;
+			case 'exec': $param = ($param instanceof \Closure) ? "closure" : $param; break;
 		}
 
 		$msg = str_replace('#Key#', $key, $msg);

@@ -217,20 +217,23 @@ html, body
 	align-self: flex-end;
 }
 
-.form-error
+.error .form-label { color: #b71c1c; }
+.error .form-input,
+.error .form-textarea
 {
-	display: block;
+	transition: 0.2s;
+	border-color: #b71c1c;
+}
 
-	width: 100%;
+.error .form-input:focus, .error .form-textarea:focus { border-color: #b71c1c; box-shadow: 0px 0px 4px #b71c1c; }
+.error .form-input:hover, .error .form-textarea:hover { border-color: #7f0000; }
 
+.form > .form-row span.form-error,
+.form > .form-column span.form-error
+{
 	font-family: 'Lato', 'Roboto', 'Arial', sans-serif;
-
-	padding: 6px 12px 6px 12px;
-	margin: 6px 0 6px 0;
-
-	border: 2px solid #e53935;
-
-	background-color: #ff6f60;
+	font-size: 0.7rem;
+	color: #b71c1c;
 }
 
 /***********************************************************************************************************************

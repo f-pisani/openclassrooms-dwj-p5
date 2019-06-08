@@ -1,56 +1,56 @@
-<?php use App\{Config}; ?>
+<?php use App\{Config, Request}; ?>
 
 <h1>Project<span>flow</span></h1>
 
 
 <div id="form-wrapper">
 	<div id="form-register">
-		<form style="opacity: 0; display: none;" class="form" action="<?=SITE_URL.'/register'?>" method="post">
+		<form <?=(Request::get('submit') == 'register') ? 'style="opacity: 1; display: flex;"' : 'style="opacity: 0; display: none;"'?> class="form" action="<?=SITE_URL.'/register'?>" method="post">
 			<h2>Rejoinez-nous ! Commencez de nouveaux projets.</h2>
 			<div class="form-column">
-				<label class="form-label" for="nickname">Nom d'utilisateur :</label>
-				<input class="form-input" type="input" id="nickname" name="nickname" placeholder="ex: Jean Dupont" value="">
+				<label class="form-label" for="nickname">Nom d'utilisateur</label>
+				<input class="form-input" type="input" id="nickname" name="nickname" placeholder="ex: Jean Dupont" value="<?=Request::get('nickname')?>" required="true" autocomplete="off">
 			</div>
 			<div class="form-column">
-				<label class="form-label" for="email_register">E-mail :</label>
-				<input class="form-input" type="email" id="email_register" name="email_register" placeholder="ex: jean.dupont@gmail.com" value="">
+				<label class="form-label" for="email_register">E-mail</label>
+				<input class="form-input" type="email" id="email_register" name="email_register" placeholder="ex: jean.dupont@gmail.com" value="<?=Request::get('email_register')?>" required="true" autocomplete="off">
 			</div>
 			<div class="form-column">
-				<label class="form-label" for="pwd_register">Mot de passe :</label>
-				<input class="form-input" type="password" id="pwd_register" name="pwd_register">
+				<label class="form-label" for="pwd_register">Mot de passe</label>
+				<input class="form-input" type="password" id="pwd_register" name="pwd_register" required="true" autocomplete="off">
 			</div>
 			<div class="form-column">
-				<label class="form-label" for="pwd_conf">Confirmation mot de passe :</label>
-				<input class="form-input" type="password" id="pwd_conf" name="pwd_conf">
+				<label class="form-label" for="pwd_conf">Confirmation mot de passe</label>
+				<input class="form-input" type="password" id="pwd_conf" name="pwd_conf" required="true" autocomplete="off">
 			</div>
 			<div class="form-actions">
-				<button class="form-btn btn-left" type="submit" name="register" value="true">Je m'inscris</button>
+				<button class="form-btn btn-left" type="submit" name="submit" value="register">Je m'inscris</button>
 			</div>
 		</form>
 
-		<div class="form-logo" style="opacity: 1; display: flex;">
+		<div <?=(Request::get('submit') == 'register') ? 'style="opacity: 0; display: none;"' : 'style="opacity: 1; display: flex;"'?> class="form-logo">
 			<h2>Inscrivez-vous !</h2>
 			<i class="fas fa-users"></i>
 		</div>
 	</div>
 
 	<div id="form-login">
-		<form class="form" action="<?=SITE_URL.'/login'?>" method="post">
+		<form <?=(Request::get('submit') == 'login') ? 'style="opacity: 1; display: flex;"' : 'style="opacity: 0; display: none;"'?> class="form" action="<?=SITE_URL.'/login'?>" method="post">
 			<h2>Suivez l'avancement de vos projets. Connectez-vous !</h2>
 			<div class="form-column">
-				<label class="form-label" for="email">E-mail :</label>
-				<input class="form-input" type="email" id="email" name="email" placeholder="ex: jean.dupont@gmail.com" value="">
+				<label class="form-label" for="email">E-mail</label>
+				<input class="form-input" type="email" id="email" name="email" placeholder="ex: jean.dupont@gmail.com" value="<?=Request::get('email')?>">
 			</div>
 			<div class="form-column">
-				<label class="form-label" for="pwd">Mot de passe :</label>
+				<label class="form-label" for="pwd">Mot de passe</label>
 				<input class="form-input" type="password" id="pwd" name="pwd">
 			</div>
 			<div class="form-actions">
-				<button class="form-btn" type="submit" name="login" value="true">Connexion</button>
+				<button class="form-btn" type="submit" name="submit" value="login">Connexion</button>
 			</div>
 		</form>
 
-		<div class="form-logo">
+		<div <?=(Request::get('submit') == 'login') ? 'style="opacity: 0; display: none;"' : 'style="opacity: 1; display: flex;"'?> class="form-logo">
 			<h2>Connectez-vous !</h2>
 			<i class="fas fa-sign-in-alt"></i>
 		</div>
@@ -59,6 +59,9 @@
 
 <script>
 $(document).ready(function(){
+	let jFormRegister = new jForm({selector: '#form-register > .form',
+								   errors: <?=$DataValidator->errorToJson()?>});
+
 	function formFocusIn(e)
 	{
 		if ($(this).width() / $(this).parent().width() * 100 > 60) return; // Already animated
@@ -155,5 +158,19 @@ $(document).ready(function(){
 	$('#form-register .form-logo').click(openFormFromLogo);
 	$('#form-login').focusin(formFocusIn);
 	$('#form-login .form-logo').click(openFormFromLogo);
+<?php
+if(Request::get('submit') == 'register')
+{
+?>
+	$('#form-register').focusin();
+<?php
+}
+else if(Request::get('submit') == 'login')
+{
+?>
+	$('#form-login').focusin();
+<?php
+}
+?>
 });
 </script>
