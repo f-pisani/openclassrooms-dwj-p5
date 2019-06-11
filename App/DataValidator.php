@@ -30,6 +30,7 @@ class DataValidatorRuleException extends \Exception {};
  *     range : $data must be between min|max (for integer & float)
  *     empty : whenever $data can be evaluate to empty or not
  *     required : whenever $data must exist to validate
+ *     match-field : $data must match an other field value
  *     ruleset : apply a nammed set of rules
  *
  * Sample :
@@ -178,6 +179,7 @@ class DataValidator
 								elseif ($param['min'] && $param['max'] && !($Data[$key] >= $param['min'] && $Data[$key] <= $param['max'])) $error = true;
 							break;
 							case 'empty': if (!$param && empty($Data[$key])) $error = true; break;
+							case 'match-field': if (!array_key_exists($param, $Data) || $Data[$key] != $Data[$param]) $error = true; break;
 							case 'ruleset': if(!$this->validate([$key => $Data[$key]], [$key => self::$rulesets[$param]])) $error = true; break;
 						}
 					}
@@ -283,6 +285,10 @@ class DataValidator
 				case 'empty':
 				case 'required':
 					if (!is_bool($param)) throw new DataValidatorRuleException("'$param' must be a boolean value for RuleType '$ruleType'");
+				break;
+
+				case 'match-field':
+					if (!is_string($param)) throw new DataValidatorRuleException("'$param' must be a string for RuleType '$ruleType'");
 				break;
 
 				case 'ruleset':

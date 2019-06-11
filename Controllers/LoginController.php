@@ -15,7 +15,8 @@ class LoginController extends Controller
 		$data = Request::assoc('nickname,email_register,pwd_register,pwd_conf');
 		$DataValidator = new DataValidator($data);
 		$DataValidator->addFieldRules('email_register', [['ruleset'=>'email']]);
-		$DataValidator->addFieldRules('nickname', [['empty'=>false, 'msg' => "Le champ est obligatoire."], ['length'=>'3|32', 'msg'=>"Le nom d'utilisateur doit être compris entre 3 et 12 caractères."]]);
+		$DataValidator->addFieldRules('nickname', [['ruleset'=>'nickname']]);
+		$DataValidator->addFieldRules('pwd_register', [['match-field'=>'pwd_conf', 'msg'=>"Les deux mots de passes sont différents."]]);
 
 		if (Request::get('submit') && $DataValidator->validate())
 		{
