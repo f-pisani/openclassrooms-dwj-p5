@@ -1,7 +1,7 @@
 <?php
 namespace Models;
 
-use App\{Model};
+use App\{Model,QueryBuilder};
 
 class UserLogin extends Model
 {
@@ -18,6 +18,11 @@ class UserLogin extends Model
 					  	 ['deleted_at', 'datetime', 'datetime'],
 					  	 ['active', 'bool', 'int']];
 
+	public static function isEmailAvailable($email)
+	{
+		$Query = new QueryBuilder();
+		return \App\DB::get()->fetch($Query->table('user_logins')->count('email')->where('email', $email));
+	}
 	//protected static $relations = ['Phones' => ['class' => 'Models\Phone', 'fk' => 'user_id']];
 	//protected static $relationsPivot = ['Phones' => ['class' => 'Models\Phone', 'table' => 'user_phone', 'pk' => 'user_id', 'fk' => 'phone_id', 'timestamps' => true]];
 }

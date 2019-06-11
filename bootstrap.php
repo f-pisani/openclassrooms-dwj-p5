@@ -12,7 +12,8 @@ Config::set("SITE_URL", Request::protocol()."://".Request::hostname());
 Config::set("APP_PATH", dirname(str_replace('\\', '/', getcwd())));
 Config::set("APP_PATH_PUBLIC", APP_PATH.'/public');
 
-DataValidator::addRuleset('email', [['exec'=>function($data){ return filter_var($data, FILTER_VALIDATE_EMAIL); }, 'msg'=>"L'adresse email n'est pas valide."]]);
+DataValidator::addRuleset('email', [['exec'=>function($data){ return filter_var($data, FILTER_VALIDATE_EMAIL); }, 'msg'=>"L'adresse email n'est pas valide."],
+									['length'=>'|256', 'msg'=>"L'adresse email est trop longue."]]);
 
 DataValidator::addRuleset('nickname', [['empty'=>false, 'msg'=>"Le champ est obligatoire."],
 									   ['regex'=>'/^([A-Za-z0-9]){1}([A-Za-z0-9_\- ]{1,30})([A-Za-z0-9]{1})$/',

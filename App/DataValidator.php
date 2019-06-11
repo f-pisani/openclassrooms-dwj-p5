@@ -15,6 +15,7 @@ class DataValidatorRuleException extends \Exception {};
  *     public function addRules(array $rules) : bool
  *     public static function addRuleset(string $name, array $rules) : bool
  *     public function validate(array $data=null, array $rules=null) : bool
+ *     public function addErrorMsg($key, $msg='') : void
  *     public function errorToArray() : array
  *     public function errorToJson() : string
  *     protected static function checkRules(array &$rules) : bool
@@ -198,6 +199,18 @@ class DataValidator
 		}
 
 		return $validated;
+	}
+
+	/*******************************************************************************************************************
+	 * public function addErrorMsg($key, $msg='') : void
+	 *     $key : Fieldname
+	 *     $msg : Error message to add
+	 */
+	public function addErrorMsg($key, $msg='') : void
+	{
+		if (!array_key_exists($key, $this->errors)) $this->errors[$key] = [];
+		$this->errors[$key][] = ['type' => 'manual',
+								 'msg' => $msg];
 	}
 
 	/*******************************************************************************************************************
